@@ -1,0 +1,242 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 $space-6;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.95);
+
+  @include respond(sm) {
+    padding: 0 $space-8;
+  }
+}
+
+// Left section
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebarTrigger {
+  flex-shrink: 0;
+}
+
+.searchContainer {
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
+  transition: all $transition-normal;
+
+  @include respond(sm) {
+    max-width: 480px;
+  }
+
+  @include respond(md) {
+    max-width: 560px;
+  }
+}
+
+.searchField {
+  width: 100%;
+}
+
+// Right section
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex-shrink: 0;
+}
+
+// Notifications
+.notificationWrapper {
+  position: relative;
+}
+
+.notificationButton {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: $radius-md;
+  color: var(--color-text-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: var(--color-text-secondary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  &[data-count] {
+    &::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      background-color: var(--color-danger);
+      color: var(--color-text-inverse);
+      font-size: 10px;
+      font-weight: 600;
+      border-radius: $radius-full;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.notificationIcon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+.notificationBadge {
+  display: none;
+}
+
+// User dropdown
+.userDropdownTrigger {
+  background: none;
+  border: none;
+  padding: 1 !important;
+
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: $radius-md;
+    padding: 1 !important;
+  }
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-1 $space-1 $space-1 $space-2;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.userAvatar {
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+  overflow: hidden;
+
+  @include respond(md) {
+    display: flex;
+  }
+}
+
+.userName {
+  font-size: $font-sm;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+
+  @include respond(lg) {
+    max-width: 160px;
+  }
+}
+
+.chevronIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-primary);
+  opacity: 0.7;
+  transition: transform $transition-fast;
+  flex-shrink: 0;
+}
+
+// Dropdown items
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  min-width: 180px;
+}
+
+.dropdownItemIcon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.5;
+  color: var(--color-text-primary);
+  opacity: 0.8;
+}
+
+.logoutItem {
+  color: var(--color-danger);
+
+  .dropdownItemIcon {
+    color: var(--color-danger);
+  }
+
+  &:hover {
+    background-color: rgba(228, 3, 59, 0.1);
+    color: var(--color-danger);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .dashboardHeader {
+    padding: 0 $space-4;
+  }
+
+  .userInfo {
+    display: none;
+  }
+
+  .userProfile {
+    padding: $space-1;
+  }
+
+  .chevronIcon {
+    display: none;
+  }
+
+  .searchContainer {
+    max-width: 200px;
+  }
+}

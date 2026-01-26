@@ -1,0 +1,63 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.auth-layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+
+  &__logo {
+    position: absolute;
+    top: 1rem;
+    z-index: 10;
+    padding: $space-4;
+    padding-top: $space-6;
+
+    @include respond(sm) {
+      padding: $space-6;
+    }
+
+    @include respond(lg) {
+      padding: $space-8;
+      padding-top: $space-8;
+    }
+
+    img {
+      width: 120px;
+      height: auto;
+    }
+  }
+
+  &__branding {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-surface);
+    padding: $space-4;
+
+    @include respond(lg) {
+      display: flex;
+    }
+
+    img {
+      max-width: 90%;
+      height: auto;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg);
+    padding-top: $space-10;
+    width: 100%;
+
+    @include respond(lg) {
+      padding-top: $space-4;
+    }
+  }
+}

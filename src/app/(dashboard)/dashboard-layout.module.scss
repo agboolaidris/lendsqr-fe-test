@@ -1,0 +1,19 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+.main {
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding-bottom: 100px;
+}
+
+.header {
+  z-index: $z-sticky;
+  height: 60px;
+}

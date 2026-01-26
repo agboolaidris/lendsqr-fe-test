@@ -1,0 +1,51 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-work-sans), sans-serif;
+}
+
+/* Remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove link decoration */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Set body defaults */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $space-4;
+  @include respond(sm) {
+    padding: 0 $space-6;
+  }
+  @include respond(lg) {
+    padding: 0 $space-8;
+  }
+  @include respond(xl) {
+    padding: 0 $space-10;
+  }
+}

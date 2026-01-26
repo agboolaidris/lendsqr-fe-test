@@ -1,0 +1,265 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.field {
+  display: block;
+  position: relative;
+
+  &FullWidth {
+    width: 100%;
+  }
+
+  &[data-disabled="true"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  // Use :focus-within for addon visibility
+  &:focus-within {
+    .addon {
+      max-height: 400px;
+      opacity: 1;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  min-height: 20px;
+}
+
+.label {
+  display: block;
+  color: var(--color-text-secondary);
+  font-size: $font-sm;
+  font-weight: 500;
+  user-select: none;
+}
+
+.requiredMark {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.hint {
+  font-size: $font-xs;
+  color: var(--color-text-primary);
+  opacity: 0.8;
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  font-family: var(--font-work-sans);
+  font-size: $font-sm;
+  line-height: 1.5;
+  border-radius: $radius-md;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  outline: none;
+  transition: all $transition-fast;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  &::placeholder {
+    color: color-mix(in oklch, var(--color-text-primary) 40%, transparent);
+    opacity: 1;
+  }
+
+  // Use :hover pseudo-class for hover state
+  &:hover:not(:disabled):not(:read-only) {
+    border-color: var(--color-border);
+  }
+
+  // Use :focus pseudo-class for focus state
+  &:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px
+      color-mix(in oklch, var(--color-primary) 20%, transparent);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-bg-disabled);
+    opacity: 0.6;
+
+    & + .rightIcon {
+      opacity: 0.5;
+    }
+  }
+
+  &:read-only {
+    cursor: default;
+    background-color: color-mix(
+      in oklch,
+      var(--color-bg) 50%,
+      var(--color-surface)
+    );
+  }
+
+  // Size variations
+  &--sm {
+    height: 32px;
+    padding: 6px 12px;
+    font-size: $font-xs;
+  }
+
+  &--md {
+    height: 40px;
+    padding: 8px 12px;
+  }
+
+  &--lg {
+    height: 48px;
+    padding: 10px 12px;
+    font-size: $font-md;
+  }
+
+  // Error state with focus
+  &Error {
+    border-color: var(--color-danger);
+
+    &:focus {
+      box-shadow: 0 0 0 3px
+        color-mix(in oklch, var(--color-danger) 20%, transparent);
+    }
+  }
+
+  // Icon padding
+  &HasLeftIcon {
+    padding-left: 44px; // 12px (padding) * 2 + 20px (icon width)
+  }
+
+  &HasRightIcon {
+    padding-right: 44px; // 12px (padding) * 2 + 20px (icon width)
+  }
+}
+
+.leftIcon,
+.rightIcon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: color-mix(in oklch, var(--color-text-primary) 60%, transparent);
+  z-index: 2;
+  transition: color $transition-fast;
+}
+
+.leftIcon {
+  left: 12px;
+}
+
+.rightIcon {
+  right: 12px;
+}
+
+// Change icon color when input is focused (using :focus-within)
+.field:focus-within {
+  .leftIcon,
+  .rightIcon {
+    color: var(--color-primary);
+  }
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: $font-xs;
+  color: var(--color-danger);
+  animation: slideIn 0.2s ease-out;
+}
+
+.addon {
+  margin-top: 8px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all $transition-normal;
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@include respond(sm) {
+  .input {
+    &--sm {
+      height: 30px;
+      padding: 6px 10px;
+    }
+
+    &--md {
+      height: 38px;
+      padding: 8px 10px;
+    }
+
+    &--lg {
+      height: 46px;
+      padding: 10px 10px;
+    }
+
+    &HasLeftIcon {
+      padding-left: 40px; // 10px (padding) * 2 + 20px (icon width)
+    }
+
+    &HasRightIcon {
+      padding-right: 40px; // 10px (padding) * 2 + 20px (icon width)
+    }
+  }
+
+  .leftIcon {
+    left: 10px;
+  }
+
+  .rightIcon {
+    right: 10px;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .input {
+    background-color: color-mix(in oklch, var(--color-surface) 95%, black);
+
+    &:focus {
+      box-shadow: 0 0 0 3px
+        color-mix(in oklch, var(--color-primary) 40%, transparent);
+    }
+
+    &:read-only {
+      background-color: color-mix(
+        in oklch,
+        var(--color-bg) 30%,
+        var(--color-surface)
+      );
+    }
+  }
+}

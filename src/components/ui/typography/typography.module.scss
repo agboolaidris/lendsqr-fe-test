@@ -1,0 +1,192 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+// Typography Scale Map
+$typography-scale: (
+  xs: 12px,
+  sm: 14px,
+  base: 16px,
+  lg: 18px,
+  xl: 20px,
+  2xl: 24px,
+  3xl: 28px,
+  4xl: 32px,
+  5xl: 40px,
+  6xl: 48px,
+);
+
+// Font Weight Map
+$font-weights: (
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+);
+
+// Variant Colors Map
+$variant-colors: (
+  default: var(--color-text-primary),
+  secondary: var(--color-text-secondary),
+  inverse: var(--color-text-inverse),
+  danger: var(--color-danger),
+  success: var(--color-success),
+  primary: var(--color-primary),
+);
+
+// Base typography
+.typography {
+  --typography-color: #{var(--color-text-primary)};
+  --typography-size: 16px;
+  --typography-weight: 400;
+  --typography-line-height: 1.5;
+
+  font-family: var(--font-work-sans);
+  font-size: var(--typography-size);
+  font-weight: var(--typography-weight);
+  color: var(--typography-color);
+  line-height: var(--typography-line-height);
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Generate size classes
+  @each $name, $size in $typography-scale {
+    &--#{$name} {
+      --typography-size: #{$size};
+
+      @if $name == "xs" or $name == "sm" {
+        --typography-line-height: 1.4;
+      } @else if $name == "base" or $name == "lg" or $name == "xl" {
+        --typography-line-height: 1.5;
+      } @else {
+        --typography-line-height: 1.2;
+      }
+    }
+  }
+
+  // Generate weight classes
+  @each $name, $weight in $font-weights {
+    &--#{$name} {
+      --typography-weight: #{$weight};
+    }
+  }
+
+  // Generate variant classes
+  @each $name, $color in $variant-colors {
+    &--#{$name} {
+      --typography-color: #{$color};
+    }
+  }
+
+  // Text alignment
+  &--align {
+    &-left {
+      text-align: left;
+    }
+
+    &-center {
+      text-align: center;
+    }
+
+    &-right {
+      text-align: right;
+    }
+
+    &-justify {
+      text-align: justify;
+    }
+  }
+
+  // Line clamping
+  &--line-clamp {
+    &-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &-4 {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+// Truncation utility
+.typographyTruncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+// Responsive typography mixin
+@mixin responsive-typography($breakpoint) {
+  @include respond($breakpoint) {
+    .typography {
+      &--xs {
+        --typography-size: 13px;
+      }
+
+      &--sm {
+        --typography-size: 15px;
+      }
+
+      &--base {
+        --typography-size: 17px;
+      }
+
+      &--lg {
+        --typography-size: 19px;
+      }
+
+      &--xl {
+        --typography-size: 22px;
+      }
+
+      &--2xl {
+        --typography-size: 26px;
+      }
+
+      &--3xl {
+        --typography-size: 30px;
+      }
+
+      &--4xl {
+        --typography-size: 34px;
+      }
+
+      &--5xl {
+        --typography-size: 44px;
+      }
+
+      &--6xl {
+        --typography-size: 52px;
+      }
+    }
+  }
+}
+
+// Apply responsive typography
+@include responsive-typography(sm);
+@include responsive-typography(lg);
+@include responsive-typography(xl);
