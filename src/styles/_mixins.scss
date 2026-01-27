@@ -23,3 +23,16 @@
     }
   }
 }
+
+@mixin container {
+  padding: 0 $space-4;
+  @include respond(sm) {
+    padding: 0 $space-6;
+  }
+  @include respond(lg) {
+    padding: 0 $space-8;
+  }
+  @include respond(xl) {
+    padding: 0 $space-10;
+  }
+}

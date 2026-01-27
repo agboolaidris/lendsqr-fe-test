@@ -41,6 +41,8 @@ const getInitials = (alt: string): string => {
   return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
 };
 
+
+
 export function Avatar({
   src,
   alt,

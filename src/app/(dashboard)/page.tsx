@@ -1,176 +1,186 @@
 "use client";
-import { User, Mail, Calendar } from "lucide-react";
+
+import { UserIcon, Mail, Calendar, SearchIcon } from "lucide-react";
 import {
   createColumnHelper,
   useReactTable,
   getCoreRowModel,
-  getSortedRowModel,
-  getPaginationRowModel,
-  getFilteredRowModel,
 } from "@tanstack/react-table";
 import { Table } from "@ui/table/table";
+import { TableFooter } from "@ui/table/table-footer";
+import { UserStatisticCard } from "./components/user-statistic-card";
+import { Typography } from "@ui/typography";
+import { TextField } from "@ui/text-field";
+import { Button } from "@ui/button";
 
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  status: "active" | "inactive" | "pending";
-  createdAt: string;
-}
+import clsx from "clsx";
+import styles from "./users-page.module.scss";
+import { useUsers } from "@hooks/useUsers";
+import { useMemo, useState } from "react";
+import { User, UsersQueryParams } from "src/@types/user";
+import { useDebouncedCallback } from "use-debounce";
+const columnHelper = createColumnHelper<User>();
 
-const columnHelper = createColumnHelper<UserData>();
-
-const data = [
-  {
-    id: "1",
-    name: "Agboola Idris",
-    email: "agboola@example.com",
-    role: "Admin",
-    status: "active",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
-    role: "User",
-    status: "active",
-    createdAt: "2024-02-20",
-  },
-  {
-    id: "3",
-    name: "Bob Johnson",
-    email: "bob@example.com",
-    role: "Editor",
-    status: "pending",
-    createdAt: "2024-03-10",
-  },
-];
-
-const columns = [
-  columnHelper.accessor("name", {
-    header: "Name",
-    cell: (info) => (
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <User size={16} />
-        <span>{info.getValue()}</span>
-      </div>
-    ),
-  }),
-  columnHelper.accessor("email", {
-    header: "Email",
-    cell: (info) => (
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <Mail size={16} />
-        <span>{info.getValue()}</span>
-      </div>
-    ),
-  }),
-  columnHelper.accessor("role", {
-    header: "Role",
-    cell: (info) => (
-      <span
-        style={{
-          padding: "4px 8px",
-          borderRadius: "4px",
-          backgroundColor: "rgba(57, 205, 204, 0.1)",
-          color: "#39cdcc",
-          fontSize: "12px",
-          fontWeight: "500",
-        }}
-      >
-        {info.getValue()}
-      </span>
-    ),
-  }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    cell: (info) => {
-      const status = info.getValue();
-      const colors = {
-        active: { bg: "rgba(57, 205, 98, 0.1)", color: "#39cd62" },
-        inactive: { bg: "rgba(228, 3, 59, 0.1)", color: "#e4033b" },
-        pending: { bg: "rgba(233, 178, 0, 0.1)", color: "#e9b200" },
-      };
-      const { bg, color } = colors[status];
-
-      return (
-        <span
-          style={{
-            padding: "4px 8px",
-            borderRadius: "4px",
-            backgroundColor: bg,
-            color,
-            fontSize: "12px",
-            fontWeight: "500",
-          }}
-        >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-      );
-    },
-  }),
-  columnHelper.accessor("createdAt", {
-    header: "Joined",
-    cell: (info) => (
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <Calendar size={16} />
-        <span>{info.getValue()}</span>
-      </div>
-    ),
-  }),
-];
-
-export default function Home() {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 10,
-      },
-    },
+export default function UsersPage() {
+  const [params, setParams] = useState<UsersQueryParams>({
+    page: 1,
+    limit: 100,
+    q: "",
+    sortBy: "created_at",
+    sortOrder: "desc",
   });
 
-  const handleRefresh = () => {
-    console.log("Refreshing data...");
-    // Add your refresh logic here
-  };
+  const debouncedSearch = useDebouncedCallback((value: string) => {
+    setParams((prev) => ({ ...prev, q: value, page: 1 }));
+  }, 1000);
 
-  const handleExport = () => {
-    console.log("Exporting data...");
-    // Add your export logic here
-  };
+  const { data, isLoading } = useUsers(params);
 
-  const handleRowClick = (row: UserData) => {
-    console.log("Row clicked:", row);
-    // Handle row click (e.g., navigate to detail page)
-  };
+  const userData = useMemo(() => data?.data || [], [data?.data]);
+
+  console.log({ data, isLoading, userData });
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("full_name", {
+        header: "Name",
+        cell: (info) => (
+          <div className={styles.cell}>
+            <UserIcon size={16} />
+            <span>{info.getValue()}</span>
+          </div>
+        ),
+      }),
+      columnHelper.accessor("email_address", {
+        header: "Email",
+        cell: (info) => (
+          <div className={styles.cell}>
+            <Mail size={16} />
+            <span>{info.getValue()}</span>
+          </div>
+        ),
+      }),
+      // columnHelper.accessor("status", {
+      //   header: "Role",
+      //   cell: (info) => (
+      //     <span className={clsx(styles.pill, styles.pillRole)}>
+      //       {info.getValue()}
+      //     </span>
+      //   ),
+      // }),
+      columnHelper.accessor("status", {
+        header: "Status",
+        cell: (info) => {
+          const status = info.getValue();
+          return (
+            <span
+              className={clsx(
+                styles.pill,
+                styles[
+                  `pill${status.charAt(0).toUpperCase() + status.slice(1)}`
+                ],
+              )}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </span>
+          );
+        },
+      }),
+      columnHelper.accessor("created_at", {
+        header: "Joined",
+        cell: (info) => (
+          <div className={styles.cell}>
+            <Calendar size={16} />
+            <span>{info.getValue()}</span>
+          </div>
+        ),
+      }),
+    ],
+    [],
+  );
+
+  const table = useReactTable<User>({
+    columns,
+    data: userData,
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true,
+    pageCount: data?.meta?.totalPages,
+  });
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <Table
-        table={table}
-        size="md"
-        // striped
-        // bordered
-        // hoverable
-        onRowClick={handleRowClick}
-      />
+    <main className={styles.page}>
+      <Typography weight="medium" size="2xl">
+        Users
+      </Typography>
 
-      {/* <TableActions
-        table={table}
-        onRefresh={handleRefresh}
-        onExport={handleExport}
-        showPageSize
-        showPageNumbers
-        showTotal
-      /> */}
-    </div>
+      <section className={styles.stats}>
+        <UserStatisticCard
+          label="Users"
+          value="2,450"
+          icon={<UserIcon size={20} />}
+          variant="purple"
+        />
+        <UserStatisticCard
+          label="Active Users"
+          value="2,450"
+          icon={<UserIcon size={20} />}
+          variant="indigo"
+        />
+        <UserStatisticCard
+          label="Users with Loans"
+          value="2,450"
+          icon={<UserIcon size={20} />}
+          variant="orange"
+        />
+        <UserStatisticCard
+          label="Users with Savings"
+          value="2,450"
+          icon={<UserIcon size={20} />}
+          variant="pink"
+        />
+      </section>
+
+      <section className={styles.tableCard}>
+        <div className={styles.toolbar}>
+          <div>
+            <Typography weight="medium" size="lg">
+              Users List
+            </Typography>
+          </div>
+          <div className={styles.toolbarLeft}>
+            <div className={styles.search}>
+              <TextField
+                leftIcon={<SearchIcon size={16} />}
+                placeholder="Search users"
+                onChange={(e) => debouncedSearch(e.target.value)}
+              />
+            </div>
+            <Button>Filter</Button>
+          </div>
+        </div>
+
+        <Table
+          table={table}
+          isLoading={isLoading}
+          skeletonRows={params.limit}
+          size="md"
+        />
+
+        <TableFooter
+          totalItems={data?.meta?.total || 0}
+          showingLabel="Showing"
+          outOfLabel="out of"
+          currentPage={params.page}
+          pageSize={params.limit}
+          pageCount={data?.meta?.totalPages || 0}
+          onPageSizeChange={(pageSize) =>
+            setParams((prev) => ({ ...prev, limit: pageSize }))
+          }
+          onPageChange={(pageIndex) =>
+            setParams((prev) => ({ ...prev, page: pageIndex }))
+          }
+        />
+      </section>
+    </main>
   );
 }

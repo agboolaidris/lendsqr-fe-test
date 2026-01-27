@@ -8,33 +8,26 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import styles from "./table.module.scss";
-import { ChevronDown, ChevronRight, Loader2 } from "lucide-react";
 
 interface TableProps<TData extends RowData> {
   table: TanStackTable<TData>;
   isLoading?: boolean;
+  skeletonRows?: number;
   emptyState?: React.ReactNode;
   className?: string;
   containerClassName?: string;
-  size?: "sm" | "md" | "lg";
-  striped?: boolean;
-  bordered?: boolean;
-  hoverable?: boolean;
-  showHeader?: boolean;
+  size?: "sm" | "md";
   onRowClick?: (row: TData) => void;
 }
 
 export function Table<TData extends RowData>({
   table,
   isLoading = false,
+  skeletonRows = 5,
   emptyState,
   className,
   containerClassName,
   size = "md",
-  striped = true,
-  bordered = true,
-  hoverable = true,
-  showHeader = true,
   onRowClick,
 }: TableProps<TData>) {
   const rows = table.getRowModel().rows;
@@ -52,92 +45,73 @@ export function Table<TData extends RowData>({
     );
   };
 
-  if (isLoading) {
-    return (
-      <div className={clsx(styles.tableContainer, containerClassName)}>
-        <div className={styles.loadingState}>
-          <Loader2 className={styles.loadingSpinner} />
-          <p>Loading data...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (rows.length === 0 && !isLoading) {
-    return (
-      <div className={clsx(styles.tableContainer, containerClassName)}>
-        {renderEmptyState()}
-      </div>
-    );
-  }
+  const renderSkeletonRows = () => {
+    return Array.from({ length: skeletonRows }).map((_, index) => (
+      <tr key={`skeleton-${index}`} className={styles.skeletonRow}>
+        {table.getAllColumns().map((column, colIndex) => (
+          <td key={`skeleton-cell-${colIndex}`} className={styles.skeletonCell}>
+            <div className={styles.skeletonLine} />
+          </td>
+        ))}
+      </tr>
+    ));
+  };
 
   return (
     <div className={clsx(styles.tableContainer, containerClassName)}>
       <table
-        className={clsx(
-          styles.table,
-          styles[`table--${size}`],
-          striped && styles.tableStriped,
-          bordered && styles.tableBordered,
-          hoverable && styles.tableHoverable,
-          className,
-        )}
+        className={clsx(styles.table, styles[`table--${size}`], className)}
       >
-        {showHeader && (
-          <thead className={styles.tableHeader}>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    className={clsx(
-                      styles.tableHeaderCell,
-                      header.column.getCanSort() && styles.sortable,
-                    )}
-                    style={{
-                      width: header.getSize(),
-                      minWidth: header.column.columnDef.minSize,
-                      maxWidth: header.column.columnDef.maxSize,
-                    }}
-                    onClick={header.column.getToggleSortingHandler()}
-                  >
-                    <div className={styles.headerCellContent}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                      {header.column.getCanSort() && (
+        <thead className={styles.tableHeader}>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className={clsx(
+                    styles.tableHeaderCell,
+                    header.column.getCanSort() && styles.sortable,
+                  )}
+                  style={{
+                    width: header.getSize(),
+                  }}
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  <div className={styles.headerCellContent}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                    {header.column.getCanSort() &&
+                      header.column.getIsSorted() && (
                         <span className={styles.sortIndicator}>
-                          {{
-                            asc: <ChevronDown className={styles.sortIcon} />,
-                            desc: <ChevronDown className={styles.sortIcon} />,
-                          }[header.column.getIsSorted() as string] ?? (
-                            <div className={styles.sortPlaceholder} />
-                          )}
+                          {header.column.getIsSorted() === "asc" ? "↑" : "↓"}
                         </span>
                       )}
-                    </div>
-                    {header.column.getCanResize() && (
-                      <div
-                        onMouseDown={header.getResizeHandler()}
-                        onTouchStart={header.getResizeHandler()}
-                        className={styles.resizer}
-                        data-resizing={header.column.getIsResizing()}
-                      />
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-        )}
+                  </div>
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
 
         <tbody className={styles.tableBody}>
-          {rows.map((row) => (
-            <React.Fragment key={row.id}>
+          {isLoading && renderSkeletonRows()}
+
+          {!isLoading && rows.length === 0 && (
+            <tr>
+              <td colSpan={table.getAllColumns().length}>
+                {renderEmptyState()}
+              </td>
+            </tr>
+          )}
+          {!isLoading &&
+            rows.length > 0 &&
+            rows.map((row) => (
               <tr
+                key={row.id}
                 className={clsx(
                   styles.tableRow,
                   onRowClick && styles.clickableRow,
@@ -145,40 +119,12 @@ export function Table<TData extends RowData>({
                 onClick={() => onRowClick?.(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className={styles.tableCell}
-                    style={{
-                      width: cell.column.getSize(),
-                    }}
-                  >
+                  <td key={cell.id} className={styles.tableCell}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
               </tr>
-
-              {/* Expanded sub-rows */}
-              {row.getIsExpanded() && row.subRows.length > 0 && (
-                <tr className={styles.expandedRow}>
-                  <td colSpan={row.getVisibleCells().length}>
-                    <div className={styles.expandedContent}>
-                      {row.subRows.map((subRow) => (
-                        <Table
-                          key={subRow.id}
-                          table={table}
-                          size={size}
-                          striped={striped}
-                          bordered={bordered}
-                          hoverable={hoverable}
-                          showHeader={false}
-                        />
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </React.Fragment>
-          ))}
+            ))}
         </tbody>
       </table>
     </div>

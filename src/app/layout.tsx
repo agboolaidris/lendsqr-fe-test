@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.scss";
+import { RootProvider } from "./Provider";
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="light">
-      <body className={`${workSans.variable}`}>{children}</body>
+      <body className={`${workSans.variable}`}>
+        <RootProvider>{children}</RootProvider>
+      </body>
     </html>
   );
 }
