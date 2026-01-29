@@ -1,4 +1,4 @@
-@use "../../../styles/mixins" as *;
+@use "../../../styles//mixins" as *;
 @use "../../../styles/variables" as *;
 
 .tableContainer {
@@ -62,7 +62,7 @@
 // }
 
 .tableHeaderCell {
-  text-align: left;
+  //text-align: left;
   font-weight: 600;
   color: var(--color-text-secondary);
   white-space: nowrap;
@@ -80,13 +80,17 @@
 .headerCellContent {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: $space-2;
+  //justify-content: space-between;
+  justify-content: start;
+  gap: $space-1;
 }
 
 .sortIndicator {
-  color: var(--color-primary);
+  display: inline-flex;
+
   font-size: $font-xs;
+
+  background-color: transparent;
 }
 
 .tableBody {
@@ -114,6 +118,7 @@
   @media (max-width: #{$bp-sm - 1px}) {
     white-space: normal;
     max-width: none;
+    width: max-content;
   }
 }
 

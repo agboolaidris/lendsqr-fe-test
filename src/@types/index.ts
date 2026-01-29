@@ -10,6 +10,6 @@ export interface PaginationMeta {
 }
 
 export type ApiResponse<T> = {
-  data: T[];
+  data: T;
   meta: PaginationMeta;
 };

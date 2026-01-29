@@ -1,6 +1,8 @@
+import "../styles/globals.scss";
+
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import "./globals.scss";
+
 import { RootProvider } from "./Provider";
 
 const workSans = Work_Sans({

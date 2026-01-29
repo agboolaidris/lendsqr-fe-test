@@ -1,0 +1,64 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.root {
+  width: 100%;
+  max-width: $bp-xs;
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+  padding: $space-5;
+
+  @include respond(sm) {
+    padding: $space-8;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.passwordBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.forgotLink {
+  align-self: flex-start;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-primary);
+  }
+}
+
+.togglePassword {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: $font-sm;
+  color: var(--color-primary);
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 500;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.submit {
+  width: 100%;
+  margin-top: $space-2;
+}

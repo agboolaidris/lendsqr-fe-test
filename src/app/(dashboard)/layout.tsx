@@ -1,8 +1,10 @@
 "use client";
 
-import { SidebarProvider, Sidebar, SidebarInset } from "@ui/sidebar";
-import styles from "./dashboard-layout.module.scss";
-import { DashboardHeader } from "./components/dashboard-header";
+import { AuthGuard } from "src/components/AuthGuard";
+
+import { DashboardHeader } from "./components/DashboardHeader";
+import { Sidebar, SidebarInset, SidebarProvider } from "./components/Sidebar";
+import styles from "./layout.module.scss";
 
 export default function DashboardLayout({
   children,
@@ -10,16 +12,18 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <div className={styles.dashboard}>
-        <Sidebar />
-        <SidebarInset>
-          <header className={styles.header}>
-            <DashboardHeader />
-          </header>
-          <main className={styles.main}>{children}</main>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <AuthGuard>
+      <SidebarProvider>
+        <div className={styles.dashboard}>
+          <Sidebar />
+          <SidebarInset>
+            <header className={styles.header}>
+              <DashboardHeader />
+            </header>
+            <main className={styles.main}>{children}</main>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </AuthGuard>
   );
 }

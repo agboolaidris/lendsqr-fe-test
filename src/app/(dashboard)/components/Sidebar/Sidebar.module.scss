@@ -1,0 +1,336 @@
+@use "../../../../styles/mixins" as *;
+@use "../../../../styles/variables" as *;
+
+// Sidebar
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z-modal;
+  height: 100vh;
+  width: 250px;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  transition:
+    transform $transition-normal,
+    width $transition-normal;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transform: translateX(-100%);
+
+  @include respond(lg) {
+    transform: translateX(0);
+    top: 0;
+    height: 100vh;
+    z-index: $z-sticky;
+  }
+
+  &.collapsed {
+    width: 70px;
+  }
+
+  &.open {
+    transform: translateX(0);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.sidebarContent {
+  height: 100%;
+  padding-bottom: $space-4;
+  display: flex;
+  flex-direction: column;
+}
+
+// Overlay
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: calc($z-modal - 1);
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity $transition-normal,
+    visibility $transition-normal;
+
+  @include respond(lg) {
+    display: none;
+  }
+}
+
+.overlayVisible {
+  opacity: 1;
+  visibility: visible;
+}
+
+// Navigation
+.nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.navHeader {
+  padding: 0 $space-4;
+  height: 60px;
+  margin-bottom: $space-4;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2;
+  min-height: 44px;
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-radius: $radius-md;
+  font-weight: 600;
+  font-size: $font-lg;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-size: $font-lg;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  transition: opacity $transition-normal;
+}
+
+.collapsed .logoText {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+// Navigation Content
+.navContent {
+  margin-top: $space-2;
+  flex: 1;
+  overflow-y: auto;
+  //padding: 0 $space-2;
+}
+
+.navGroup {
+  margin-bottom: $space-2;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Group Title Styling
+.navGroupTitle {
+  font-size: $font-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-primary);
+  opacity: 0.6;
+  padding: $space-2 $space-3 $space-1;
+  margin-bottom: $space-1;
+  transition: opacity $transition-normal;
+}
+
+.collapsed .navGroupTitle {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: all $transition-fast;
+  position: relative;
+  min-height: 44px;
+
+  // Create a pseudo-element for the left border
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: transparent;
+    transition: background-color $transition-fast;
+  }
+
+  &:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-primary) 10%,
+      transparent
+    ) !important;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+}
+
+.navLinkActive {
+  color: var(--color-primary) !important;
+
+  background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+  &::before {
+    background-color: var(--color-primary);
+  }
+}
+
+.navIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+
+.navLabel {
+  font-size: $font-sm;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: opacity $transition-normal;
+}
+
+.collapsed .navLabel {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebarInsect {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: margin-left $transition-normal;
+  width: 100%;
+
+  @include respond(lg) {
+    margin-left: 250px;
+  }
+}
+
+.sidebarInsectCollapsed {
+  @include respond(lg) {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--color-surface);
+  border-radius: 0;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-secondary);
+}
+
+.content {
+  margin-top: 4px;
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  min-width: 200px;
+  padding: 4px 0;
+  z-index: 50;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+}
+
+.navOrganization {
+  margin-bottom: $space-4;
+}
+.dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: $space-4 0;
+  justify-content: center;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  padding: $space-3 $space-4;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-primary) 10%,
+      transparent
+    );
+  }
+}
+
+.content {
+  width: 240px;
+  box-shadow: $shadow-md;
+}

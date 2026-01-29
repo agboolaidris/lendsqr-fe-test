@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Avatar Component > matches snapshot for fallback 1`] = `
+<div>
+  <div
+    aria-label="Agboola Idris"
+    class="_avatar_c28842 _avatar--md_c28842 _avatar--circle_c28842 _avatarFallback_c28842"
+    role="img"
+  >
+    <span
+      class="_avatarInitials_c28842"
+    >
+      AI
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Avatar Component > matches snapshot for image avatar 1`] = `
+<div>
+  <div
+    aria-label="Agboola Idris"
+    class="_avatar_c28842 _avatar--md_c28842 _avatar--circle_c28842"
+    role="img"
+  >
+    <img
+      alt="Agboola Idris"
+      class="_avatarImage_c28842"
+      loading="lazy"
+      sizes="40px"
+      src="/avatar.png"
+    />
+  </div>
+</div>
+`;

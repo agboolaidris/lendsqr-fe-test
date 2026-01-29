@@ -1,16 +1,20 @@
 "use client";
 
-import React from "react";
+import { MoveDownIcon, MoveUpIcon, MoveVerticalIcon } from "@icons/Move";
 import {
-  Table as TanStackTable,
   flexRender,
   RowData,
+  SortingState,
+  Table as TanStackTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import { memo } from "react";
+
 import styles from "./table.module.scss";
 
 interface TableProps<TData extends RowData> {
   table: TanStackTable<TData>;
+  sorting?: SortingState; // <-- pass sorting state
   isLoading?: boolean;
   skeletonRows?: number;
   emptyState?: React.ReactNode;
@@ -18,10 +22,13 @@ interface TableProps<TData extends RowData> {
   containerClassName?: string;
   size?: "sm" | "md";
   onRowClick?: (row: TData) => void;
+  dataLength?: number;
+  searchQuery?: string;
 }
 
 export function Table<TData extends RowData>({
   table,
+  sorting = [],
   isLoading = false,
   skeletonRows = 5,
   emptyState,
@@ -33,10 +40,8 @@ export function Table<TData extends RowData>({
   const rows = table.getRowModel().rows;
 
   const renderEmptyState = () => {
-    if (emptyState) {
+    if (emptyState)
       return <div className={styles.emptyState}>{emptyState}</div>;
-    }
-
     return (
       <div className={styles.emptyState}>
         <div className={styles.emptyStateIcon}>📊</div>
@@ -45,8 +50,8 @@ export function Table<TData extends RowData>({
     );
   };
 
-  const renderSkeletonRows = () => {
-    return Array.from({ length: skeletonRows }).map((_, index) => (
+  const renderSkeletonRows = () =>
+    Array.from({ length: skeletonRows }).map((_, index) => (
       <tr key={`skeleton-${index}`} className={styles.skeletonRow}>
         {table.getAllColumns().map((column, colIndex) => (
           <td key={`skeleton-cell-${colIndex}`} className={styles.skeletonCell}>
@@ -55,6 +60,22 @@ export function Table<TData extends RowData>({
         ))}
       </tr>
     ));
+
+  if (!isLoading && rows.length === 0)
+    return (
+      <div className={clsx(styles.tableContainer, containerClassName)}>
+        {renderEmptyState()}
+      </div>
+    );
+
+  const getSortIcon = (columnId: string) => {
+    const sortState = sorting.find((s) => s.id === columnId);
+    if (!sortState) return <MoveVerticalIcon width={16} height={12} />;
+    return sortState.desc ? (
+      <MoveDownIcon width={16} height={12} />
+    ) : (
+      <MoveUpIcon width={16} height={12} />
+    );
   };
 
   return (
@@ -72,9 +93,7 @@ export function Table<TData extends RowData>({
                     styles.tableHeaderCell,
                     header.column.getCanSort() && styles.sortable,
                   )}
-                  style={{
-                    width: header.getSize(),
-                  }}
+                  style={{ width: header.getSize() }}
                   onClick={header.column.getToggleSortingHandler()}
                 >
                   <div className={styles.headerCellContent}>
@@ -84,12 +103,11 @@ export function Table<TData extends RowData>({
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                    {header.column.getCanSort() &&
-                      header.column.getIsSorted() && (
-                        <span className={styles.sortIndicator}>
-                          {header.column.getIsSorted() === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
+                    {header.column.getCanSort() && (
+                      <span className={styles.sortIndicator}>
+                        {getSortIcon(header.column.id)}
+                      </span>
+                    )}
                   </div>
                 </th>
               ))}
@@ -98,35 +116,31 @@ export function Table<TData extends RowData>({
         </thead>
 
         <tbody className={styles.tableBody}>
-          {isLoading && renderSkeletonRows()}
-
-          {!isLoading && rows.length === 0 && (
-            <tr>
-              <td colSpan={table.getAllColumns().length}>
-                {renderEmptyState()}
-              </td>
-            </tr>
-          )}
-          {!isLoading &&
-            rows.length > 0 &&
-            rows.map((row) => (
-              <tr
-                key={row.id}
-                className={clsx(
-                  styles.tableRow,
-                  onRowClick && styles.clickableRow,
-                )}
-                onClick={() => onRowClick?.(row.original)}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className={styles.tableCell}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
+          {isLoading
+            ? renderSkeletonRows()
+            : rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className={clsx(
+                    styles.tableRow,
+                    onRowClick && styles.clickableRow,
+                  )}
+                  onClick={() => onRowClick?.(row.original)}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className={styles.tableCell}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>
   );
 }
+
+export const MemoizedTable = memo(Table) as typeof Table;

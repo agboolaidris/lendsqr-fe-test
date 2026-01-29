@@ -1,0 +1,99 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  @include container;
+  padding-top: $space-10 !important;
+}
+
+/* ===== Stats ===== */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+
+  @include respond(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== Table Card ===== */
+.tableCard {
+  background-color: var(--color-surface);
+  border-radius: $radius-md;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-md;
+}
+
+/* ===== Toolbar ===== */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-4;
+
+  @include respond(sm) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.search {
+  width: 200px;
+  max-width: 100%;
+  @include respond(sm) {
+    width: 320px;
+  }
+}
+
+/* ===== Table Cells ===== */
+.cell {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+/* ===== Pills ===== */
+.pill {
+  padding: 4px 10px;
+  border-radius: $radius-sm;
+  font-size: $font-xs;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pillRole {
+  background: oklch(from var(--color-primary) l c h / 0.12);
+  color: var(--color-primary);
+}
+
+.pillActive {
+  background: oklch(from var(--color-success) l c h / 0.12);
+  color: var(--color-success);
+}
+
+.pillInactive {
+  background: oklch(from var(--color-danger) l c h / 0.12);
+  color: var(--color-danger);
+}
+
+.pillPending {
+  background: oklch(from var(--color-warning) l c h / 0.12);
+  color: var(--color-warning);
+}

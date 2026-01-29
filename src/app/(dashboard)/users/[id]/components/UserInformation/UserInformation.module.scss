@@ -1,0 +1,133 @@
+@use "../../../../../../styles/mixins" as *;
+@use "../../../../../../styles/variables" as *;
+
+.detailsContainer {
+  background-color: var(--color-surface);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+  padding: $space-6;
+}
+
+/* =========================
+   Sections
+========================= */
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-5;
+  margin-top: $space-5;
+
+  // tablet and up → 2 columns
+  @include respond(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-6 $space-10;
+    margin-top: $space-6;
+  }
+
+  // desktop and up → 3 columns
+  @include respond(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $space-6 $space-12;
+  }
+}
+
+/* =========================
+   Info rows
+========================= */
+
+.infoRow {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  min-height: 40px;
+}
+
+.label {
+  font-size: $font-xs;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-size: $font-md;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* =========================
+   Guarantor block
+========================= */
+
+.guarantorBlock {
+  margin-bottom: $space-8;
+}
+
+/* =========================
+   Divider between sections
+========================= */
+
+.divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: $space-6 0;
+
+  @include respond(md) {
+    margin: $space-8 0;
+  }
+}
+
+/* =========================
+   Skeleton Loading
+========================= */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-disabled) 25%,
+    var(--color-bg) 50%,
+    var(--color-bg-disabled) 75%
+  );
+  background-size: 300% 100%;
+  animation: skeletonShimmer 1.2s linear infinite;
+  border-radius: $radius-sm;
+}
+
+.skeletonLabel {
+  height: 10px;
+  width: 90px;
+}
+
+.skeletonValue {
+  height: 16px;
+  width: 140px;
+}
+
+/* Section title skeleton */
+.section > .skeletonValue {
+  margin-bottom: $space-4;
+}
+
+/* =========================
+   Skeleton animation
+========================= */
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

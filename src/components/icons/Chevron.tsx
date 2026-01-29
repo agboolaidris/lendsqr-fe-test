@@ -1,22 +1,58 @@
-import React from "react";
 import { SVGProps } from "react";
 
 export const ChevronDownIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
-      width="8"
-      height="5"
-      viewBox="0 0 8 5"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       {...props}
     >
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M3.05928 3.8696C3.39522 4.24304 3.9421 4.23992 4.2749 3.8696L7.1499 0.675C7.48584 0.30234 7.35224 0 6.85146 0H0.48266C-0.0181206 0 -0.14938 0.30546 0.18422 0.675L3.05928 3.8696Z"
-        fill="currentColor"
-      />
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+};
+
+export const ChevronLeftIcon = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+};
+
+export const ChevronRightIcon = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m9 18 6-6-6-6" />
     </svg>
   );
 };

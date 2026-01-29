@@ -1,0 +1,261 @@
+@use "../../../../../../styles/variables" as *;
+@use "../../../../../../styles/mixins" as *;
+
+/* ================= CONTAINER ================= */
+
+.userSummaryContainer {
+  background-color: var(--color-surface);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  overflow: hidden;
+
+  padding: $space-5 $space-5 0;
+
+  @include respond(md) {
+    padding: $space-6 $space-6 0;
+  }
+}
+
+/* ================= PROFILE HEADER ================= */
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+  margin-bottom: $space-8;
+
+  flex-direction: column;
+  align-items: flex-start;
+
+  @include respond(md) {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
+
+/* divider — only show on desktop */
+.seperator {
+  display: none;
+
+  @include respond(md) {
+    display: block;
+    height: 80px;
+    width: 1px;
+    background-color: var(--color-border);
+    flex-shrink: 0;
+  }
+}
+
+/* ================= AVATAR ================= */
+
+.avatarSection {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  min-width: 0;
+
+  @include respond(md) {
+    width: auto;
+  }
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+/* ================= TIER ================= */
+
+.tierSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.userTier {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-1 $space-2;
+  width: fit-content;
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: var(--color-border);
+
+  &.filled {
+    color: oklch(0.658 0.159 100);
+  }
+}
+
+/* ================= ACCOUNT ================= */
+
+.accountSection {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  word-break: break-word;
+}
+
+/* ================= TABS ================= */
+
+.tabsList {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  border-bottom: 1px solid var(--color-border);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tabItem {
+  padding: $space-4 $space-6;
+  font-size: $font-sm;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+
+  cursor: pointer;
+  transition: all $transition-fast;
+  position: relative;
+
+  background: none;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &:hover {
+    color: var(--color-primary);
+    background-color: var(--color-bg);
+  }
+
+  &.active {
+    color: var(--color-primary);
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--color-primary);
+      border-radius: $radius-sm $radius-sm 0 0;
+    }
+  }
+
+  &:first-child {
+    padding-left: $space-6;
+  }
+
+  &:last-child {
+    padding-right: $space-6;
+  }
+}
+
+.tabLabel {
+  display: inline-block;
+}
+
+/* ================= MOBILE TUNING ================= */
+
+@media (max-width: #{$bp-md - 1px}) {
+  .tabItem {
+    padding: $space-3 $space-4;
+  }
+}
+
+/* ================= SKELETON ================= */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-disabled) 25%,
+    var(--color-bg) 50%,
+    var(--color-bg-disabled) 75%
+  );
+  background-size: 400% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+  border-radius: $radius-md;
+
+  &Text {
+    height: $font-sm;
+    width: 100px;
+    margin-bottom: $space-2;
+  }
+
+  &Title {
+    height: $font-xl;
+    width: 150px;
+  }
+
+  &Avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: $radius-full;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===== Skeleton extras ===== */
+
+.skeletonAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-full;
+}
+
+.skeletonTitle {
+  height: 20px;
+  width: 160px;
+  margin-bottom: $space-2;
+}
+
+.skeletonText {
+  height: 14px;
+  width: 120px;
+}
+
+.skeletonStar {
+  width: 16px;
+  height: 16px;
+  border-radius: $radius-sm;
+}
+
+.skeletonTab {
+  height: 40px;
+  width: 140px;
+  margin: $space-3 $space-2;
+  border-radius: $radius-md;
+}

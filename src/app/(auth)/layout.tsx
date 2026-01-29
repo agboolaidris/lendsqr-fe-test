@@ -1,7 +1,8 @@
-import { CompanyLogo } from "@ui/logo";
+import "./layout.scss";
+
+import { CompanyLogo } from "@ui/Logo";
 import type { Metadata } from "next";
 import Image from "next/image";
-import "./auth-layout.scss";
 
 export const metadata: Metadata = {
   title: "Create Next App",

@@ -1,6 +1,10 @@
-import users from "src/data/users.json";
 import { NextResponse } from "next/server";
 import { SortOrder } from "src/@types";
+import { User } from "src/@types/user";
+import usersData from "src/data/users.json";
+
+// Cast imported JSON
+const users: User[] = usersData as User[];
 
 const getNestedValue = (obj: unknown, path: string): unknown => {
   return path.split(".").reduce((acc: unknown, key: string) => {
@@ -30,7 +34,7 @@ export async function GET(req: Request) {
         [u.full_name, u.email_address, u.phone_number, u.reference_id]
           .filter(Boolean)
           .some((field) =>
-            field.toString().toLowerCase().includes(q.toString().toLowerCase()),
+            String(field).toLowerCase().includes(q.toLowerCase()),
           ),
       );
     }
@@ -46,9 +50,9 @@ export async function GET(req: Request) {
 
         // Date
         if (sortBy === "created_at") {
-          return sortOrder === "asc"
-            ? new Date(aVal).getTime() - new Date(bVal).getTime()
-            : new Date(bVal).getTime() - new Date(aVal).getTime();
+          const aDate = new Date(String(aVal)).getTime();
+          const bDate = new Date(String(bVal)).getTime();
+          return sortOrder === "asc" ? aDate - bDate : bDate - aDate;
         }
 
         // Numbers
@@ -56,10 +60,12 @@ export async function GET(req: Request) {
           return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
         }
 
-        // Strings
+        // Strings (fallback)
+        const aStr = String(aVal);
+        const bStr = String(bVal);
         return sortOrder === "asc"
-          ? String(aVal).localeCompare(String(bVal))
-          : String(bVal).localeCompare(String(aVal));
+          ? aStr.localeCompare(bStr)
+          : bStr.localeCompare(aStr);
       });
     }
 

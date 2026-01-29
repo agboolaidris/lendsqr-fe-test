@@ -1,79 +1,98 @@
 "use client";
-import { TextField } from "@ui/text-field";
-import { Button } from "@ui/button";
-import { Typography } from "@ui/typography";
-import "./login.scss";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Button } from "@ui/Button";
+import { TextField } from "@ui/TextField";
+import { Typography } from "@ui/Typography";
 import Link from "next/link";
 import { useCallback, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useAuth } from "src/context/AuthContext";
 import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
-const schema = yup.object().shape({
+import styles from "./page.module.scss";
+
+const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup.string().required("Password is required"),
 });
 
+type LoginFormValues = yup.InferType<typeof schema>;
+
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
     resolver: yupResolver(schema),
+    mode: "onTouched",
   });
 
-  const onSubmit: SubmitHandler<yup.InferType<typeof schema>> = useCallback(
-    (data) => {
-      console.log(data);
+  const togglePassword = useCallback(() => {
+    setShowPassword((v) => !v);
+  }, []);
+
+  const onSubmit: SubmitHandler<LoginFormValues> = useCallback(
+    async ({ email }) => {
+      login(email);
     },
-    [],
+    [login],
   );
+
   return (
-    <div className="login-page">
-      <div className="login-page__header">
+    <div className={styles.root}>
+      {/* Header */}
+      <div className={styles.header}>
         <Typography size="4xl" weight="semibold" variant="secondary">
           Welcome!
         </Typography>
         <Typography>Enter details to login.</Typography>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="login-page__form">
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
         <TextField
           label="Email"
           placeholder="Enter your email"
+          autoComplete="email"
           {...register("email")}
           error={errors.email?.message}
         />
 
-        <div className="login-page__password">
+        <div className={styles.passwordBlock}>
           <TextField
             label="Password"
             placeholder="Enter your password"
             type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             {...register("password")}
             error={errors.password?.message}
             rightIcon={
               <button
                 type="button"
-                className="login-page__toggle-password"
-                onClick={() => setShowPassword((v) => !v)}
+                className={styles.togglePassword}
+                onClick={togglePassword}
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? "Hide" : "Show"}
               </button>
             }
           />
 
-          <Link href="#">
-            <Typography variant="primary" className="login-page__forgot">
+          <Link href="#" className={styles.forgotLink}>
+            <Typography variant="primary" size="sm">
               Forgot your password?
             </Typography>
           </Link>
         </div>
 
-        <Button className="login-page__submit w-full">LOG IN</Button>
+        <Button type="submit" disabled={isSubmitting} className={styles.submit}>
+          LOG IN
+        </Button>
       </form>
     </div>
   );

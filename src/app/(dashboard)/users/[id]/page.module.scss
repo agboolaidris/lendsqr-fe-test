@@ -1,0 +1,81 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.page {
+  @include container;
+  padding-top: $space-6;
+  padding-bottom: $space-12;
+  background-color: var(--color-bg);
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+/* ------------------ BACK BUTTON ------------------ */
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  width: fit-content;
+
+  color: var(--color-text-secondary);
+  font-size: $font-sm;
+  font-weight: 500;
+
+  transition: color $transition-fast;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ------------------ HEADER ------------------ */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+
+  @include respond(md) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.headerActions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  width: 100%;
+
+  @include respond(sm) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+  }
+
+  button {
+    width: 100%;
+
+    @include respond(sm) {
+      width: auto;
+    }
+  }
+}
+
+/* ------------------ SECTIONS ------------------ */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
