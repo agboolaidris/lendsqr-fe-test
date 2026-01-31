@@ -1,9 +1,3 @@
-Perfect — here is your **updated full README** with a strong **Architecture Notes** section added. This is written to match what reviewers expect in an intermediate+ frontend assessment and explains your decisions clearly.
-
-You can replace your current `README.md` with this.
-
----
-
 # 🏦 Lendsqr Frontend Engineering Assessment
 
 A pixel-accurate frontend implementation of the **Lendsqr Admin Console assessment** built with **Next.js, React, TypeScript, and SCSS**.
