@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Typography Component > matches snapshot — complex variant 1`] = `
+<div>
+  <h2
+    class="_typography_0e0a5e _typography--3xl_0e0a5e _typography--semibold_0e0a5e _typography--danger_0e0a5e _typographyTruncate_0e0a5e _typography--align-right_0e0a5e _typography--line-clamp-2_0e0a5e"
+    data-size="3xl"
+    data-variant="danger"
+    data-weight="semibold"
+  >
+    Complex Snapshot
+  </h2>
+</div>
+`;
+
+exports[`Typography Component > matches snapshot — default 1`] = `
+<div>
+  <p
+    class="_typography_0e0a5e _typography--base_0e0a5e _typography--normal_0e0a5e _typography--default_0e0a5e"
+    data-size="base"
+    data-variant="default"
+    data-weight="normal"
+  >
+    Snapshot
+  </p>
+</div>
+`;

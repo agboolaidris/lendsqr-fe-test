@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthGuard } from "src/components/AuthGuard";
+import { AuthGuard } from "@ui/AuthGuard";
 
 import { DashboardHeader } from "./components/DashboardHeader";
 import { Sidebar, SidebarInset, SidebarProvider } from "./components/Sidebar";

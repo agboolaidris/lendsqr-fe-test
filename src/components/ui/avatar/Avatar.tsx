@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import styles from "./Avatar.module.scss";
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+export type AvatarProps = React.HTMLAttributes<HTMLDivElement> & {
   /** Image source URL */
   src?: string;
   /** Alt text for the image - also used for fallback initials */

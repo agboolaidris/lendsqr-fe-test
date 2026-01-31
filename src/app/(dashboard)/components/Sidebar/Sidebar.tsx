@@ -2,7 +2,7 @@
 
 import { DashboardIcon } from "@icons/Dashboard";
 import { SidebarGuarantorIcon, SidebarUserIcon } from "@icons/User";
-import { CompanyLogo } from "@ui/Logo";
+import { CompanyLogo } from "@ui/CompanyLogo";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

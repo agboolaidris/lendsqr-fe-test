@@ -1,6 +1,6 @@
 import "./layout.scss";
 
-import { CompanyLogo } from "@ui/Logo";
+import { CompanyLogo } from "@ui/CompanyLogo";
 import type { Metadata } from "next";
 import Image from "next/image";
 

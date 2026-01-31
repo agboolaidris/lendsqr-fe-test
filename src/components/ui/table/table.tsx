@@ -14,7 +14,7 @@ import styles from "./table.module.scss";
 
 interface TableProps<TData extends RowData> {
   table: TanStackTable<TData>;
-  sorting?: SortingState; // <-- pass sorting state
+  sorting?: SortingState;
   isLoading?: boolean;
   skeletonRows?: number;
   emptyState?: React.ReactNode;

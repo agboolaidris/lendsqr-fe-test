@@ -7,7 +7,7 @@ type User = {
   email: string;
 };
 
-type AuthContextType = {
+export type AuthContextType = {
   user: User | null;
   login: (email: string) => void;
   logout: () => void;

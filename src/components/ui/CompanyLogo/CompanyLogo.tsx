@@ -1,6 +1,6 @@
 import Image, { ImageProps } from "next/image";
 
-type Props = Partial<ImageProps> & {
+export type CompanyLogoProps = Partial<ImageProps> & {
   type?: "full" | "icon";
 };
 
@@ -9,7 +9,7 @@ export const CompanyLogo = ({
   height = 36,
   type = "full",
   ...props
-}: Props) => {
+}: CompanyLogoProps) => {
   return (
     <Image
       src={type === "full" ? "/full-logo.svg" : "/icon-logo.svg"}

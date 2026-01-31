@@ -1,105 +1,93 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { Avatar } from "./Avatar";
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
 
-/**
- * Mock next/image to normal img for tests
- */
-vi.mock("next/image", () => ({
-  default: (props: any) => <img {...props} />,
-}));
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  user-select: none;
 
-/**
- * Mock SCSS module classes so they are not hashed
- */
-vi.mock("./Avatar.module.scss", () => ({
-  default: new Proxy({}, { get: (_, key) => key }),
-}));
+  // Sizes
+  &--xs {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
 
-describe("Avatar", () => {
-  it("renders fallback initials when no src is provided", () => {
-    render(<Avatar alt="Agboola Idris" />);
+  &--sm {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
 
-    expect(screen.getByText("AI")).toBeInTheDocument();
-  });
+  &--md {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
 
-  it("renders single initial for one-word alt", () => {
-    render(<Avatar alt="Idris" />);
+  &--lg {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
 
-    expect(screen.getByText("I")).toBeInTheDocument();
-  });
+  &--xl {
+    width: 56px;
+    height: 56px;
+    font-size: 18px;
+  }
 
-  it("renders default U when alt is empty", () => {
-    render(<Avatar alt="" />);
+  // Shapes
+  &--circle {
+    border-radius: $radius-full;
+  }
 
-    expect(screen.getByText("U")).toBeInTheDocument();
-  });
+  &--square {
+    border-radius: $radius-md;
+  }
 
-  it("renders image when src is provided", () => {
-    render(<Avatar src="/avatar.png" alt="User Test" />);
+  // States
+  &Bordered {
+    border: 2px solid var(--color-surface);
+    box-shadow: 0 0 0 1px var(--color-surface);
+  }
 
-    const img = screen.getByAltText("User Test");
-    expect(img).toBeInTheDocument();
-    expect(img.tagName).toBe("IMG");
-  });
+  &Interactive {
+    cursor: pointer;
+    transition: transform $transition-fast;
 
-  it("falls back to initials when image errors", () => {
-    render(<Avatar src="/bad.png" alt="User Test" />);
+    &:hover {
+      transform: scale(1.05);
+    }
 
-    const img = screen.getByAltText("User Test");
-    fireEvent.error(img);
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
 
-    expect(screen.getByText("UT")).toBeInTheDocument();
-  });
+  &Fallback {
+    background: linear-gradient(
+      135deg,
+      rgba(57, 205, 204, 0.1) 0%,
+      rgba(33, 63, 125, 0.1) 100%
+    );
+    color: var(--color-text-secondary);
+  }
+}
 
-  it("applies interactive role and tabIndex when interactive", () => {
-    render(<Avatar alt="User Test" interactive />);
+.avatarInitials {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
 
-    const avatar = screen.getByRole("button");
-    expect(avatar).toHaveAttribute("tabIndex", "0");
-  });
-
-  it("uses img role when not interactive", () => {
-    render(<Avatar alt="User Test" />);
-
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
-  });
-
-  it("applies bordered class when bordered prop is true", () => {
-    const { container } = render(<Avatar alt="User Test" bordered />);
-
-    expect(container.firstChild).toHaveClass("avatarBordered");
-  });
-
-  it("applies interactive class when interactive prop is true", () => {
-    const { container } = render(<Avatar alt="User Test" interactive />);
-
-    expect(container.firstChild).toHaveClass("avatarInteractive");
-  });
-
-  it("applies correct size class", () => {
-    const { container } = render(<Avatar alt="User Test" size="xl" />);
-
-    expect(container.firstChild).toHaveClass("avatar--xl");
-  });
-
-  it("applies correct shape class", () => {
-    const { container } = render(<Avatar alt="User Test" shape="square" />);
-
-    expect(container.firstChild).toHaveClass("avatar--square");
-  });
-
-  it("passes extra HTML props to root div", () => {
-    render(<Avatar alt="User Test" data-testid="avatar-root" />);
-
-    expect(screen.getByTestId("avatar-root")).toBeInTheDocument();
-  });
-
-  it("negative: should not render image when src is missing", () => {
-    render(<Avatar alt="User Test" />);
-
-    const img = screen.queryByRole("img", { hidden: true });
-    expect(img).not.toHaveAttribute("src");
-  });
-});
+.avatarImage {
+  object-fit: cover;
+}

@@ -1,0 +1,90 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TextField Component > matches snapshot — basic 1`] = `
+<div>
+  <div
+    class="_field_7ceaec _fieldFullWidth_7ceaec"
+  >
+    <div
+      class="_header_7ceaec"
+    >
+      <label
+        class="_label_7ceaec"
+        for="_r_j_"
+      >
+        Snap
+      </label>
+    </div>
+    <div
+      class="_control_7ceaec"
+    >
+      <input
+        aria-invalid="false"
+        class="_input_7ceaec _input--md_7ceaec"
+        id="_r_j_"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TextField Component > matches snapshot — with error + icons 1`] = `
+<div>
+  <div
+    class="_field_7ceaec _fieldFullWidth_7ceaec"
+  >
+    <div
+      class="_header_7ceaec"
+    >
+      <label
+        class="_label_7ceaec"
+        for="_r_k_"
+      >
+        Email
+      </label>
+    </div>
+    <div
+      class="_control_7ceaec"
+    >
+      <div
+        aria-hidden="true"
+        class="_leftIcon_7ceaec"
+      >
+        <span>
+          L
+        </span>
+      </div>
+      <input
+        aria-describedby="_r_k_-error"
+        aria-invalid="true"
+        class="_input_7ceaec _input--lg_7ceaec _inputHasLeftIcon_7ceaec _inputHasRightIcon_7ceaec _inputError_7ceaec"
+        id="_r_k_"
+      />
+      <div
+        class="_rightIcon_7ceaec"
+      >
+        <span>
+          R
+        </span>
+      </div>
+    </div>
+    <div
+      aria-live="assertive"
+      class="_error_7ceaec"
+      id="_r_k_-error"
+      role="alert"
+    >
+      <span>
+        Required
+      </span>
+    </div>
+    <div
+      class="_addon_7ceaec"
+    >
+      <div>
+        Help
+      </div>
+    </div>
+  </div>
+</div>
+`;
