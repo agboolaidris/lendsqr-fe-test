@@ -10,7 +10,7 @@ import {
 import clsx from "clsx";
 import { memo } from "react";
 
-import styles from "./table.module.scss";
+import styles from "./Table.module.scss";
 
 interface TableProps<TData extends RowData> {
   table: TanStackTable<TData>;

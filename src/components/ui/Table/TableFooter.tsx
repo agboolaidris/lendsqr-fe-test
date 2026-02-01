@@ -4,7 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@icons/Chevron";
 import { Button } from "@ui/Button";
 import clsx from "clsx";
 
-import styles from "./table.module.scss";
+import styles from "./Table.module.scss";
 
 interface TableFooterProps {
   /** Total number of items */
