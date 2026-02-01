@@ -14,8 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Button } from "@ui/Button";
-import { Table } from "@ui/Table/Table";
-import { TableFooter } from "@ui/Table/TableFooter";
+import { Table, TableFooter } from "@ui/Table/";
 import { TextField } from "@ui/TextField";
 import { Typography } from "@ui/Typography";
 import clsx from "clsx";
