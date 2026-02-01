@@ -19,7 +19,9 @@
         "name": "next"
       }
     ],
+
     "paths": {
+      "@/*": ["./src/*"],
       "@ui/*": ["./src/components/ui/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@icons/*": ["./src/components/icons/*"]
