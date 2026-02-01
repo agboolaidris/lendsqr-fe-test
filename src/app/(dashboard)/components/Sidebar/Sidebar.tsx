@@ -63,7 +63,10 @@ const NavGroupItem = memo(function NavGroupItem({
       <ul className={styles.navList}>
         {group.children.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive =
+            item.href === "/"
+              ? pathname === "/"
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <li key={item.href + item.label} className={styles.navItem}>

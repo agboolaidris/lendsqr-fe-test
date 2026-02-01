@@ -1,84 +1,157 @@
-# 🏦 Lendsqr Frontend Engineering Assessment
+# **Lendsqr Frontend Engineering Assessment**
 
-A pixel-accurate frontend implementation of the **Lendsqr Admin Console assessment** built with **Next.js, React, TypeScript, and SCSS**.
+A **pixel-accurate frontend implementation** of the Lendsqr Admin Console assessment built with **Next.js, React, TypeScript, and SCSS**.
 
-This project reproduces the required Figma screens and implements authentication flow, dashboard views, user listing, and user details with persistent storage and unit testing.
-
----
-
-# 🚀 Features
-
-- ✅ Pixel-accurate UI based on provided Figma design
-- ✅ Authentication flow (login + guarded routes)
-- ✅ Dashboard layout and sidebar navigation
-- ✅ Users listing table with sorting & UI states
-- ✅ User details page with stored data retrieval
-- ✅ Persistent browser storage support
-- ✅ Reusable UI component system
-- ✅ Schema-based form validation
-- ✅ Unit tests with Vitest + Testing Library
-- ✅ SCSS module styling
-- ✅ Type-safe architecture
+This project reproduces the required Figma screens and implements authentication flow, dashboard views, user listing, and user details with persistent storage, API mocking, caching, and unit testing.
 
 ---
 
-# 🧰 Tech Stack
+## **Live Demo**
+
+🔗 **Deployed App:**
+`https://<candidate-name>-lendsqr-fe-test.<platform-domain>`
+
+---
+
+## **Figma Design**
+
+🎨 **Design Reference:**
+[https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting](https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting)
+
+---
+
+## **Features Implemented**
+
+### **Authentication**
+
+- Login page with pixel-perfect UI
+- Form validation using **react-hook-form + Yup**
+- Responsive design (mobile, tablet, desktop)
+- Auth protection using `AuthGuard`
+
+### **Dashboard**
+
+- Summary cards
+- Sidebar navigation
+- Fully responsive layout
+
+### **Users Page**
+
+- Fetches **500 mock user records**
+- Table built with **@tanstack/react-table**
+- Column sorting implemented
+- Global search
+- Column filters grouped inside a dropdown (instead of per-column filters for better UX)
+- Pagination
+- Status indicators
+
+> 🔍 **Design decision:**
+> The Figma design places filters in every column.
+> I replaced this with:
+>
+> - Sorting on each column
+> - A centralized **filter dropdown** beside the global search
+>
+> This improves usability, reduces visual clutter, and maintains functional parity.
+
+### **User Details Page**
+
+- Reads user data from **localStorage**
+- Persistent across refresh
+- Matches Figma layout and spacing
+- Tabs for different user information sections
+
+---
+
+## **Mock API**
+
+The project includes an **optional internal API layer** using Next.js route handlers.
+
+### **Available Endpoints**
+
+```http
+GET /api/users
+GET /api/users/:id
+```
+
+### **Implementation**
+
+- Located in: `app/api/users`
+- Returns mocked data based on Figma structure
+- Supports individual user retrieval
+- Used by React Query for caching and state management
+
+---
+
+## **Tech Stack**
+
+### **Core**
 
 - **Next.js (App Router)**
 - **React**
 - **TypeScript**
+
+### **Styling**
+
 - **SCSS Modules**
-- **Vitest**
-- **React Testing Library**
-- **React Hook Form**
+- BEM-style naming
+- Fully responsive layouts
+
+### **Forms & Validation**
+
+- **react-hook-form**
 - **Yup**
+
+### **State & Data**
+
+- **@tanstack/react-query** (data fetching & caching)
+- **localStorage** for persistence
+
+### **UI & Utilities**
+
 - **@tanstack/react-table**
+- **@radix-ui/react-dropdown-menu**
+- **@radix-ui/react-slot**
 - **clsx**
+
+### **Testing**
+
+- **Vitest**
+- **@testing-library/react**
+- Unit tests with positive & negative scenarios
 
 ---
 
-# 📂 Project Structure
+## **Project Structure**
 
-```
+```txt
 src/
-│
 ├── app/
 │   ├── (auth)/
-│   │   └── login/
-│   │
 │   ├── (dashboard)/
-│   │   ├── users/
-│   │   └── layout.tsx
-│   │
-│   ├── api/                # optional mock API routes
+│   ├── api/
 │   │   └── users/
-│   │       ├── route.ts        → GET /api/users
-│   │       └── [id]/route.ts   → GET /api/users/:id
-│   │
 │   └── layout.tsx
 │
 ├── components/
 │   ├── icons/
-│   │
 │   └── ui/
 │       ├── Button/
-│       │   ├── index.ts
 │       │   ├── Button.tsx
 │       │   ├── Button.test.tsx
-│       │   └── Button.module.scss
-│       │
-│       └── TextField/
-│           ├── index.ts
-│           ├── TextField.tsx
-│           ├── TextField.test.tsx
-│           └── TextField.module.scss
+│       │   ├── Button.module.scss
+│       │   └── index.ts
+│       ├── TextField/
+│       ├── Table/
+│       ├── Dropdown/
+│       └── AuthGuard/
 │
 ├── context/
 │   └── AuthContext.tsx
 │
 ├── hooks/
-├── services/
 ├── lib/
+├── services/
 ├── styles/
 ├── @types/
 └── tests/
@@ -86,301 +159,73 @@ src/
 
 ---
 
-# 🏗 Architecture Notes
+## **Architecture Notes**
 
-This project follows a **feature-driven + layered architecture** to ensure scalability, testability, and separation of concerns.
+### **Why Next.js App Router**
 
-## 🔹 1. App Router Structure
+- File-based routing for clarity
+- Server-ready architecture
+- API routes colocated with UI
 
-Next.js App Router is used to separate major application areas:
+### **UI Component Design**
 
-- `(auth)` — authentication pages (login)
-- `(dashboard)` — protected dashboard routes
-- `api` — optional mock API endpoints
+- Components are **fully isolated**
+- Each UI component contains:
+  - Logic
+  - Styles (SCSS Module)
+  - Tests
 
-This keeps routing concerns clean and makes layout sharing easier.
+### **State & Data Strategy**
 
----
+- Server data handled via **React Query**
+- Client state kept minimal
+- Persistent data stored in localStorage
 
-## 🔹 2. Component Architecture
+### **Scalability**
 
-UI components are designed using a **design-system approach**:
-
-```
-components/ui → reusable, generic UI primitives
-components/icons → icon-only components
-```
-
-Each UI component is self-contained:
-
-```
-Button/
-  Button.tsx
-  Button.module.scss
-  Button.test.tsx
-  index.ts
-```
-
-This provides:
-
-- Encapsulation
-- Test proximity
-- Style isolation
-- Easy reuse
+- Feature-based folder grouping
+- Reusable UI primitives
+- Predictable naming conventions
 
 ---
 
-## 🔹 3. Styling Strategy
+## **Testing Strategy**
 
-- SCSS Modules used for **style isolation**
-- No global CSS leakage
-- Component-scoped styling
-- Shared tokens placed in `/styles`
-- Conditional styling handled with `clsx`
+- Unit tests for:
+  - UI components
+  - Auth guard behavior
+  - Table sorting and rendering
 
-Why SCSS Modules:
-
-- Matches assessment requirement
-- Predictable scoping
-- Easier maintenance at scale
+- Positive and negative test cases
+- Mocked Next.js router and context providers
+- Designed to mirror production-ready testing patterns
 
 ---
 
-## 🔹 4. State & Context
+## **Video Review (Required)**
 
-Global auth state is handled with:
+🎥 **Loom Video (≤ 3 minutes)**
 
-```
-context/AuthContext.tsx
-```
+In the video:
 
-Responsibilities:
+- I compare the Figma design directly with the implemented UI
+- I explain architectural and UX decisions
+- I demonstrate responsiveness
+- I show the Users table, filters, and data persistence
+- My face is visible throughout the recording, including during screen sharing
 
-- User session state
-- Loading state
-- Login/logout handlers
-- Storage persistence
-
-Protected routing handled via:
-
-```
-AuthGuard component
-```
-
-This ensures:
-
-- Centralized auth logic
-- Clean page components
-- Testable guard behavior
+🔗 **Loom video link**
 
 ---
 
-## 🔹 5. Data Layer
-
-A service abstraction layer is used:
-
-```
-services/
-```
-
-Responsibilities:
-
-- Fetch users
-- Fetch user by ID
-- Transform API responses
-- Mock fallback support
-
-Optional Next.js API routes:
-
-```
-GET /api/users
-GET /api/users/:id
-```
-
-This allows:
-
-- Mock API simulation
-- Local testing without external dependency
-- Easy swap to real backend
-
----
-
-## 🔹 6. Forms & Validation
-
-Forms use:
-
-- React Hook Form → performance & ergonomics
-- Yup → schema validation
-
-Benefits:
-
-- Declarative validation
-- Type-safe form schemas
-- Minimal re-renders
-- Clear error handling
-
----
-
-## 🔹 7. Table System
-
-Users table built with:
-
-```
-@tanstack/react-table
-```
-
-Reasons:
-
-- Headless architecture
-- Sorting support
-- Custom cell rendering
-- Flexible column definitions
-- Testable logic layer
-
----
-
-## 🔹 8. Type Safety
-
-Types are centralized:
-
-```
-@types/
-```
-
-Includes:
-
-- User types
-- API response types
-- Context types
-- Component prop types
-
-This avoids:
-
-- Inline type duplication
-- Unsafe mocks in tests
-- Inconsistent shapes
-
----
-
-## 🔹 9. Testing Strategy
-
-Testing uses:
-
-- Vitest
-- React Testing Library
-
-Coverage includes:
-
-- UI components
-- Guard behavior
-- Positive scenarios
-- Negative scenarios
-- Loading states
-- Redirect behavior
-
-Tests live close to components to improve maintainability.
-
----
-
-## 🔹 10. Performance Considerations
-
-- App Router layouts reduce re-renders
-- React Hook Form minimizes form renders
-- Table logic separated from UI
-- Memoized column definitions where needed
-- SCSS modules avoid runtime style computation
-
----
-
-# 🔐 Authentication
-
-- Login form with validation
-- AuthContext manages session
-- AuthGuard protects dashboard routes
-- Redirect on unauthenticated access
-- Session stored in browser storage
-
----
-
-# 👥 Users Module
-
-## Users List
-
-- Sortable table
-- Status badges
-- Custom render cells
-- Responsive layout
-
-## User Details
-
-- Dedicated detail view
-- Data persisted in storage
-- Retrieved without refetch when available
-
----
-
-# 🧪 Testing
-
-Run tests:
-
-```bash
-npm run test
-```
-
-Includes:
-
-- Component tests
-- Guard tests
-- Render tests
-- Interaction tests
-
----
-
-# 💾 Data Handling
-
-Supports:
-
-- Mock JSON dataset (500 records)
-- Optional API routes
-- localStorage persistence
-
----
-
-# ▶️ Getting Started
-
-Install:
-
-```bash
-npm install
-```
-
-Run dev:
-
-```bash
-npm run dev
-```
-
-Build:
-
-```bash
-npm run build
-```
-
-Start:
-
-```bash
-npm run start
-```
-
----
-
-# ✅ Assessment Goals Met
-
-- Pixel fidelity
-- Type safety
-- SCSS usage
-- Test coverage
-- Clean architecture
-- Component reuse
-- Accessibility-conscious markup
-- Responsive design
+## **Submission Checklist**
+
+✅ Pixel-perfect UI
+✅ TypeScript used throughout
+✅ SCSS Modules
+✅ Mock API implementation
+✅ Unit tests (positive & negative)
+✅ Clean Git history
+✅ Public repository (`lendsqr-fe-test`)
+✅ Deployed application
+✅ Loom video walkthrough
