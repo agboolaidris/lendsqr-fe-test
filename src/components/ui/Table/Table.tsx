@@ -8,7 +8,7 @@ import {
   Table as TanStackTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 import styles from "./Table.module.scss";
 

@@ -61,6 +61,7 @@ function LoginPage() {
           autoComplete="email"
           {...register("email")}
           error={errors.email?.message}
+          disabled={isSubmitting}
         />
 
         <div className={styles.passwordBlock}>
@@ -70,6 +71,7 @@ function LoginPage() {
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
             {...register("password")}
+            disabled={isSubmitting}
             error={errors.password?.message}
             rightIcon={
               <button
@@ -90,7 +92,12 @@ function LoginPage() {
           </Link>
         </div>
 
-        <Button type="submit" disabled={isSubmitting} className={styles.submit}>
+        <Button
+          loading={isSubmitting}
+          type="submit"
+          disabled={isSubmitting}
+          className={styles.submit}
+        >
           LOG IN
         </Button>
       </form>

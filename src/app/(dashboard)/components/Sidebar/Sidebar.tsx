@@ -1,6 +1,8 @@
 "use client";
 
 import { DashboardIcon } from "@icons/Dashboard";
+import { LoanIcon, SidebarLoanIcon } from "@icons/Loan";
+import { SidebarDecisionModelIcon } from "@icons/Sidebar";
 import { SidebarGuarantorIcon, SidebarUserIcon } from "@icons/User";
 import { CompanyLogo } from "@ui/CompanyLogo";
 import clsx from "clsx";
@@ -36,8 +38,8 @@ const NAV_ITEMS: NavGroup[] = [
     children: [
       { href: "/users", label: "Users", icon: SidebarUserIcon },
       { href: "#", label: "Guarantors", icon: SidebarGuarantorIcon },
-      { href: "#", label: "Loans", icon: DashboardIcon },
-      { href: "#", label: "Decision Models", icon: DashboardIcon },
+      { href: "#", label: "Loans", icon: SidebarLoanIcon },
+      { href: "#", label: "Decision Models", icon: SidebarDecisionModelIcon },
       { href: "#", label: "Savings", icon: SidebarGuarantorIcon },
       { href: "#", label: "Loan Requests", icon: SidebarUserIcon },
     ],

@@ -13,7 +13,6 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { Button } from "@ui/Button";
 import { Table, TableFooter } from "@ui/Table";
 import { TextField } from "@ui/TextField";
 import { Typography } from "@ui/Typography";
@@ -155,6 +154,10 @@ export default function UsersPage() {
     onSortingChange: handleSortingChange,
   });
 
+  const tableKey = useMemo(() => {
+    return `${params.page}-${params.limit}-${params.q}-${params.sortBy}-${params.sortOrder}`;
+  }, [params]);
+
   return (
     <main className={styles.page}>
       <Typography weight="medium" size="2xl">
@@ -213,11 +216,11 @@ export default function UsersPage() {
                 }}
               />
             </div>
-            <Button>Filter</Button>
           </div>
         </div>
 
         <Table
+          key={tableKey}
           table={table}
           isLoading={isLoading}
           skeletonRows={params.limit}

@@ -9,14 +9,14 @@ This project reproduces the required Figma screens and implements authentication
 ## **Live Demo**
 
 🔗 **Deployed App:**
-`https://<candidate-name>-lendsqr-fe-test.<platform-domain>`
+`https://lendsqr-fe-test-pygo.vercel.app/login`
 
 ---
 
 ## **Figma Design**
 
 🎨 **Design Reference:**
-[https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting](https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting)
+[https://www.figma.com/design/ZKILoCoIoy1IESdBpq3GNC/Lendsqr-Frontend-Engineering-Assessment?node-id=6819-58317&t=dJ5Res0aiHvbsrqc-0](https://www.figma.com/design/ZKILoCoIoy1IESdBpq3GNC/Lendsqr-Frontend-Engineering-Assessment?node-id=6819-58317&t=dJ5Res0aiHvbsrqc-0)
 
 ---
 

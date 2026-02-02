@@ -10,9 +10,17 @@ export const CompanyLogo = ({
   type = "full",
   ...props
 }: CompanyLogoProps) => {
-  return (
+  return type === "full" ? (
     <Image
-      src={type === "full" ? "/full-logo.svg" : "/icon-logo.svg"}
+      src="/full-logo.svg"
+      alt="lendsqr logo"
+      width={width}
+      height={height}
+      {...props}
+    />
+  ) : (
+    <Image
+      src="/icon-logo.svg"
       alt="lendsqr logo"
       width={width}
       height={height}
