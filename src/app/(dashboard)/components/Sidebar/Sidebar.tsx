@@ -1,8 +1,7 @@
 "use client";
 
 import { DashboardIcon } from "@icons/Dashboard";
-import { LoanIcon, SidebarLoanIcon } from "@icons/Loan";
-import { SidebarDecisionModelIcon } from "@icons/Sidebar";
+import { SidebarDecisionModelIcon, SidebarLoanIcon } from "@icons/Sidebar";
 import { SidebarGuarantorIcon, SidebarUserIcon } from "@icons/User";
 import { CompanyLogo } from "@ui/CompanyLogo";
 import clsx from "clsx";
