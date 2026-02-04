@@ -8,7 +8,7 @@ const CACHE_TIME = 1000 * 60 * 60 * 24; // 24 hours
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      cacheTime: CACHE_TIME, // Garbage collection time
+      gcTime: CACHE_TIME,
     },
   },
 });
