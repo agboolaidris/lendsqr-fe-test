@@ -1,3 +1,21 @@
+// lib/queryClient.ts
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClient } from "@tanstack/react-query";
 
-export const queryClient = new QueryClient();
+// Configure the default cache time for queries
+const CACHE_TIME = 1000 * 60 * 60 * 24; // 24 hours
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: CACHE_TIME, // Garbage collection time
+    },
+  },
+});
+
+// Create a persister that uses localStorage
+// This is a client-side only function, so it needs to be used correctly in Next.js
+export const localStoragePersister =
+  typeof window !== "undefined"
+    ? createSyncStoragePersister({ storage: window.localStorage })
+    : null;
